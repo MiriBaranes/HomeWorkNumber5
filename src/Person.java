@@ -6,6 +6,9 @@ public  abstract class  Person {
         this.firstName=firstName;
         this.lastName=lastName;
     }
+    public Person(){
+
+    }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;

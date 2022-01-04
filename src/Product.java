@@ -4,15 +4,18 @@ public class Product {
     private String description;
     private double price;
     private boolean isInStoke;
+    private double vipPrice;
 
-    public Product(String productName,String serial,String description,double price,boolean isInStoke){
-        this.productName=productName;
-        this.serial=serial;
-        this.description=description;
-        if (price>=0) {
-            this.price = price;
-        }
-        this.isInStoke=isInStoke;
+    public Product(String productName, String serial, String description, double price, boolean isInStoke, double discount) {
+        if (price < 0)
+            throw new IllegalArgumentException("price can't be negative");
+
+        this.productName = productName;
+        this.serial = serial;
+        this.description = description;
+        this.price = price;
+        this.isInStoke = isInStoke;
+        this.vipPrice = (1 - discount) * price;
     }
 
     public String getSerial() {
@@ -27,12 +30,16 @@ public class Product {
         return description;
     }
 
-    public double getPrice() {
-        return price;
+    public void setDiscount(double discount) {
+        this.vipPrice = (1-discount)*this.price;
+    }
+
+    public double getPrice(boolean isVip) {
+        return isVip ? this.vipPrice : this.price;
     }
 
     public void setPrice(double price) {
-        if (price>=0) {
+        if (price >= 0) {
             this.price = price;
         }
     }
@@ -56,8 +63,13 @@ public class Product {
     public void setProductName(String productName) {
         this.productName = productName;
     }
-    public String toString(){
-        StringBuilder output= new StringBuilder();
+
+    public double getDiscount() {
+        return 1-vipPrice/price;
+    }
+
+    public String toString() {
+        StringBuilder output = new StringBuilder();
         output.append(this.productName).append(" price: ").append(this.price);
         return output.toString();
     }
